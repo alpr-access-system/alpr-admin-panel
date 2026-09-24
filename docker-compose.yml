@@ -1,0 +1,18 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: alpr_frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      # Montar el código local dentro del contenedor para recarga en vivo (Hot Reload)
+      - ./frontend:/app
+      # Evitar que la carpeta local node_modules sobrescriba la del contenedor
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      # Configuración recomendada para Vite en Docker Windows (fuerza el polling de archivos)
+      - CHOKIDAR_USEPOLLING=true
+    restart: unless-stopped
